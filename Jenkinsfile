@@ -4,7 +4,7 @@ pipeline {
             stage('package'){
                 steps{
                         bat '''
-                            cd voting-app
+                            cd Voting-app
                              mvn clean package
                              mvn clean install
                              mvn -B verify
@@ -20,7 +20,7 @@ pipeline {
                             mvn clean install
                            '''
                          }
-        }
+			}
           stage('SonarQube') {
             steps{
                 bat '''
@@ -55,14 +55,13 @@ pipeline {
                 	'''
     			}
     		}
-        }
-        
     	stage('Deploy') {
     		steps{
     			echo "Deploying"
     			        deploy adapters: [tomcat7(credentialsId: '21e30ec6-0d46-4ea8-9078-ef90a528a39f', path: '', url: 'http://localhost:8093')], contextPath: 'voting-app', war : '**/*.war'
     			}
-
+		}
     }
         
 }   
+
