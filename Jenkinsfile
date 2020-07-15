@@ -5,22 +5,11 @@ pipeline {
                 steps{
                         bat '''
                             cd voting-app
-                             mvn clean package
                              mvn clean install
-                             mvn -B verify
                             '''
                  }
             }
-            // Build The Project              
-            stage('Build') {
-                         steps {
-                             git 'https://github.com/La-litha/voting-app.git'
-                           bat '''
-                            cd voting-app
-                            mvn clean install
-                           '''
-                         }
-			}
+            
           stage('SonarQube') {
             steps{
                 bat '''
@@ -32,16 +21,8 @@ pipeline {
                 '''
             }
         }
-        stage('Approval') {
-            agent none
-            steps {
-                script {
-                    def deploymentDelay = input id: 'Deploy', message: 'Deploy to production?', submitter: 'rkivisto,admin', parameters: [choice(choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'], description: 'Hours to delay deployment?', name: 'deploymentDelay')]
-                    sleep time: deploymentDelay.toInteger(), unit: 'HOURS'
-                }
-            }
-        }
-        stage('Build Maven') { 
+	// Build The Project              
+            stage('Build Maven') { 
         	tools {	
         			jdk 'jdk 1.8'
         			maven 'apache-maven-3.6.3'
@@ -55,7 +36,6 @@ pipeline {
                 	'''
     			}
     		}
-
     }
         
 }   
