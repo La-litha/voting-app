@@ -30,7 +30,7 @@ pipeline {
                      -Dsonar.host.url=http://localhost:9000 \
                      -Dsonar.login=e5f081032c178e543854c9449715bf691cdf9c4e
                 '''
-            } 
+            }
         }
         stage('Approval') {
             agent none
