@@ -8,7 +8,7 @@ pipeline {
             stage('package'){
                 steps{
                         bat '''
-                            cd voting-app
+                            cd Voting-app
                              mvn clean package
                              mvn clean install
                              mvn -B verify
