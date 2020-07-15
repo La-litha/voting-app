@@ -41,7 +41,7 @@ pipeline {
                 }
             }
         }
-        stage('Build') { 
+        stage('Build Maven') { 
         	tools {	
         			jdk 'jdk 1.8'
         			maven 'apache-maven-3.6.3'
