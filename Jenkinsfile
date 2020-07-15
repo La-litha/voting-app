@@ -30,9 +30,9 @@ pipeline {
                 bat '''
                     cd voting-app
                     mvn sonar:sonar \
-                     -Dsonar.projectKey=Happy-Trip \
+                     -Dsonar.projectKey=voting-app \
                      -Dsonar.host.url=http://localhost:9000 \
-                     -Dsonar.login=b5c2c3f618a864f53fe1b11d828705a98f2f887d
+                     -Dsonar.login=e5f081032c178e543854c9449715bf691cdf9c4e
                 '''
             } 
         }
@@ -64,7 +64,7 @@ pipeline {
     	stage('Deploy') {
     		steps{
     			echo "Deploying"
-    			        deploy adapters: [tomcat7(credentialsId: '21e30ec6-0d46-4ea8-9078-ef90a528a39f', path: '', url: 'http://localhost:8093')], contextPath: 'HappyTrip', war : '**/*.war'
+    			        deploy adapters: [tomcat7(credentialsId: '21e30ec6-0d46-4ea8-9078-ef90a528a39f', path: '', url: 'http://localhost:8093')], contextPath: 'voting-app', war : '**/*.war'
     			}
 
     }
