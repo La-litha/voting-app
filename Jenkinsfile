@@ -4,7 +4,7 @@ pipeline {
             stage('package'){
                 steps{
                         bat '''
-                            cd Voting-app
+                            cd voting-app
                              mvn clean package
                              mvn clean install
                              mvn -B verify
@@ -55,12 +55,7 @@ pipeline {
                 	'''
     			}
     		}
-    	stage('Deploy') {
-    		steps{
-    			echo "Deploying"
-    			        deploy adapters: [tomcat7(credentialsId: '21e30ec6-0d46-4ea8-9078-ef90a528a39f', path: '', url: 'http://localhost:8093')], contextPath: 'voting-app', war : '**/*.war'
-    			}
-		}
+
     }
         
 }   
