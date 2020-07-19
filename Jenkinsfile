@@ -9,19 +9,7 @@ pipeline {
                             '''
                  }
             }
-            
-          stage('SonarQube') {
-            steps{
-                bat '''
-                    cd worker
-                    mvn sonar:sonar \
-                     -Dsonar.projectKey=voting-app \
-                     -Dsonar.host.url=http://localhost:9000 \
-                     -Dsonar.login=e5f081032c178e543854c9449715bf691cdf9c4e
-                '''
-            }
-        }
-	// Build The Project              
+		// Build The Project              
             stage('Build Maven') { 
         	tools {	
         			jdk 'jdk 1.8'
@@ -36,6 +24,19 @@ pipeline {
                 	'''
     			}
     		}
+            
+          stage('SonarQube') {
+            steps{
+                bat '''
+                    cd worker
+                    mvn sonar:sonar \
+                     -Dsonar.projectKey=voting-app \
+                     -Dsonar.host.url=http://localhost:9000 \
+                     -Dsonar.login=e5f081032c178e543854c9449715bf691cdf9c4e
+                '''
+            }
+        }
+	
 		  stage('Approval') {
             // no agent, so executors are not used up when waiting for approvals
             agent none
