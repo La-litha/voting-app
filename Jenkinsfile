@@ -36,6 +36,16 @@ pipeline {
                 	'''
     			}
     		}
+		  stage('Build image') {
+                steps {
+                    echo 'Starting to build docker image DB'
+                    script {
+                        def DB = docker.build("my-image:${env.BUILD_ID}","-f ${env.WORKSPACE}/db/Dockerfile .")
+                        def nodejs = docker.build("my-image:${env.BUILD_ID}","-f ${env.WORKSPACE}/app/Dockerfile .") 
+                        def php = docker.build("my-image:${env.BUILD_ID}","-f ${env.WORKSPACE}/php/Dockerfile .") 
+                    }
+                }
+            }
     }
         
 }   
