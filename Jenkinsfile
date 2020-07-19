@@ -5,7 +5,9 @@ pipeline {
                 steps{
                         bat '''
                             cd worker
+			      mvn clean package
                              mvn clean install
+                             mvn -B verify
                             '''
                  }
             }
@@ -21,7 +23,7 @@ pipeline {
             		    java -version
             			mvn -version
             			mvn clean package
-				 mvn -X verify
+				 
                 	'''
     			}
     		}
