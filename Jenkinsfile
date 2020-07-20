@@ -30,7 +30,7 @@ pipeline {
             
           stage('SonarQube') {
             steps{
-                bat '''
+		    bat '''
                     cd worker
                     mvn sonar:sonar \
                      -Dsonar.projectKey=voting-app \
