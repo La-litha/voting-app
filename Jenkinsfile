@@ -1,14 +1,9 @@
 pipeline {
     agent any
         stages {
-            stage('package'){
+            stage('SCM'){
                 steps{
-                        bat '''
-                            cd worker
-			      mvn clean package
-                             mvn clean install
-                             mvn -B verify
-                            '''
+                        git 'https://github.com/La-litha/voting-app.git'
                  }
             }
 		// Build The Project              
@@ -18,25 +13,26 @@ pipeline {
         			maven 'apache-maven-3.6.3'
         	    }
     		steps {
-    		    bat '''
+    		    bat "
     		        cd worker
+			    mvn clean install
             		    java -version
-            			mvn -version
-            			mvn clean package
+            		    mvn -version
+            		    mvn clean package
 				 
-                	'''
+                	"
     			}
     		}
             
           stage('SonarQube') {
             steps{
-		    bat '''
+		    bat "
                     cd worker
                     mvn sonar:sonar \
                      -Dsonar.projectKey=voting-app \
                      -Dsonar.host.url=http://localhost:9000 \
                      -Dsonar.login=e5f081032c178e543854c9449715bf691cdf9c4e
-                '''
+                "
             }
         }
 	
@@ -52,7 +48,7 @@ pipeline {
         }
    stage('Build Container'){
          steps{
-         bat '''
+         bat "
          echo "Remove containers if any"
          docker rm -f redis db vote result worker
          
@@ -71,7 +67,7 @@ pipeline {
          
          echo "Deploying Container worker-app"
          docker run -d --name=worker --link redis:redis --link db:db lalitha13/worker-app
-         '''
+         "
          }
       }
 }
