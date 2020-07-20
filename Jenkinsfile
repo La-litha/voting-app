@@ -25,7 +25,9 @@ pipeline {
    stage('SonarQube') {
                 steps {
                    bat '''
-                     cd worker
+		   setx AAA aaa
+		   echo AAA=%AAA%
+                    cd worker
                     mvn sonar:sonar \
 			  -Dsonar.projectKey=voting-app \
                           -Dsonar.host.url=http://localhost:9000 \
