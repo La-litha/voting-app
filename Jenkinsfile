@@ -26,10 +26,10 @@ pipeline {
                 steps {
                    bat '''
                      cd worker
-                     mvn sonar:sonar \
-			  -Dsonar.projectKey=voting-app \
-                     -Dsonar.host.url=http://localhost:9000 \
-                     -Dsonar.login=e5f081032c178e543854c9449715bf691cdf9c4e
+                    mvn sonar:sonar \
+  			-Dsonar.projectKey=vote \
+ 			 -Dsonar.host.url=http://localhost:9000 \
+ 			 -Dsonar.login=a22c56be81925086564d3621c425b94aaf995b7b
                    '''
    }
    }
