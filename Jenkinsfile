@@ -1,42 +1,39 @@
 pipeline {
-    agent any
-        stages {
-            stage('SCM'){
-                steps{
-                        git 'https://github.com/La-litha/voting-app.git'
-                 }
-            }
-		// Build The Project              
-            stage('Build Maven') { 
-        	tools {	
-        			jdk 'jdk 1.8'
-        			maven 'apache-maven-3.6.3'
-        	    }
-    		steps {
-    		    bat ...
-    		        cd worker
-			    mvn clean install
-            		    java -version
-            		    mvn -version
-            		    mvn clean package
-				 
-                	...
-    			}
-    		}
-            
-          stage('SonarQube') {
-            steps{
-		    bat ...
-                    cd worker
-                    mvn sonar:sonar \
-                     -Dsonar.projectKey=voting-app \
+ agent any
+  stages {
+    stage('SCM') {
+      steps {
+         git 'https://github.com/La-litha/voting-app.git'
+       }
+    }
+   stage("Build") {
+    tools{
+        jdk 'Jdk_1.8'
+        maven 'apache-maven-3.6.3'
+        }
+     steps {
+    bat '''
+           cd worker
+           mvn clean install
+	   java -version
+           mvn -version
+           mvn clean package
+                   
+       '''
+   }
+   }
+   stage('SonarQube') {
+                steps {
+                   bat '''
+                     cd worker
+                     mvn sonar:sonar \
+			  -Dsonar.projectKey=voting-app \
                      -Dsonar.host.url=http://localhost:9000 \
                      -Dsonar.login=e5f081032c178e543854c9449715bf691cdf9c4e
-                ...
-            }
-        }
-	
-		  stage('Approval') {
+                   '''
+   }
+   }
+   stage('Approval') {
             // no agent, so executors are not used up when waiting for approvals
             agent none
             steps {
@@ -48,7 +45,7 @@ pipeline {
         }
    stage('Build Container'){
          steps{
-         bat "
+         bat '''
          echo "Remove containers if any"
          docker rm -f redis db vote result worker
          
@@ -60,14 +57,14 @@ pipeline {
          
          echo "Running project..."
          echo "Deploying Container Vote-app on port 5000"
-         docker run -d --name=vote -p 5000:80 --link redis:redis lalitha13/vote-app
+         docker run -d --name=vote -p 5000:80 --link redis:redis debaduttapradhan1996/vote-app
          
          echo "Deploying Container Result-app on port 5001"
-         docker run -d --name=result -p 5001:80 --link redis:redis --link db:db lalitha13/result-app
+         docker run -d --name=result -p 5001:80 --link redis:redis --link db:db debaduttapradhan1996/result-app
          
          echo "Deploying Container worker-app"
-         docker run -d --name=worker --link redis:redis --link db:db lalitha13/worker-app
-         "
+         docker run -d --name=worker --link redis:redis --link db:db debaduttapradhan1996/worker-app
+         '''
          }
       }
 }
@@ -82,6 +79,4 @@ post {
             
         }
     }
-        
-}   
-
+}
