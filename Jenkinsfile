@@ -8,7 +8,7 @@ pipeline {
     }
    stage("Build") {
     tools{
-        jdk 'Jdk_1.8'
+        jdk 'jdk_1.8'
         maven 'apache-maven-3.6.3'
         }
      steps {
@@ -57,13 +57,13 @@ pipeline {
          
          echo "Running project..."
          echo "Deploying Container Vote-app on port 5000"
-         docker run -d --name=vote -p 5000:80 --link redis:redis debaduttapradhan1996/vote-app
+         docker run -d --name=vote -p 5000:80 --link redis:redis lalitha13/vote-app
          
          echo "Deploying Container Result-app on port 5001"
-         docker run -d --name=result -p 5001:80 --link redis:redis --link db:db debaduttapradhan1996/result-app
+         docker run -d --name=result -p 5001:80 --link redis:redis --link db:db lalitha13/result-app
          
          echo "Deploying Container worker-app"
-         docker run -d --name=worker --link redis:redis --link db:db debaduttapradhan1996/worker-app
+         docker run -d --name=worker --link redis:redis --link db:db lalitha13/worker-app
          '''
          }
       }
